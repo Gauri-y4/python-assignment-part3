@@ -1,5 +1,6 @@
 # PART 3: FILE I/O, APIs & EXCEPTION HANDLING
 # Product Explorer & Error-Resilient Logger
+import requests
 
 # TASK 1: File Read & Write Basics 
 print("TASK 1: File Read & Write Basics ")
@@ -52,3 +53,46 @@ if not found:
 print()
 print()
 print()
+
+# TASK 2: API Integration
+url = "https://dummyjson.com/products?limit=20"
+response = requests.get(url)
+data = response.json()
+products = data["products"]
+print("ID | Title | Category | Price | Rating")
+print("----------------------------------------------------")
+print()
+for p in products:
+    print(f"{p['id']} | {p['title']} | {p['category']} | ${p['price']} | {p['rating']}")
+print()
+print()
+filtered = []
+for p in products:
+    if p["rating"] >= 4.5:
+        filtered.append(p)
+filtered.sort(key=lambda x: x["price"], reverse=True)
+print("Filtered & Sorted Products (Rating >= 4.5):")
+print()
+for p in filtered:
+    print(f"{p['title']} - ${p['price']} (Rating: {p['rating']})")
+print()
+print()
+print("Laptop Products: ")
+print()
+url2 = "https://dummyjson.com/products/category/laptops"
+response2 = requests.get(url2)
+data2 = response2.json()
+laptops = data2["products"]
+for p in laptops:
+    print(f"{p['title']} - ${p['price']}")
+print()
+print()
+print("POST Request: ")
+print()
+new_product = {
+    "title": "My Custom Product",
+    "price": 999,
+    "category": "electronics",
+    "description": "A product I created via API"}
+response3 = requests.post("https://dummyjson.com/products/add",json=new_product)
+print(response3.json())
