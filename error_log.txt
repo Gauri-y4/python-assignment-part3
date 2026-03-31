@@ -1,0 +1,2 @@
+[2026-03-31 10:08:25.556242] ERROR in fetch_products: ConnectionError — HTTPSConnectionPool(host='this-host-does-not-exist-xyz.com', port=443): Max retries exceeded with url: /api (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000001B09944AF40>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))
+[2026-03-31 10:08:25.916183] ERROR in lookup_product: HTTPError — 404 Not Found for product ID 999
