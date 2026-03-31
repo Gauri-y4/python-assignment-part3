@@ -1,8 +1,9 @@
 # PART 3: FILE I/O, APIs & EXCEPTION HANDLING
 # Product Explorer & Error-Resilient Logger
 import requests
-
+from datetime import datetime
 # TASK 1: File Read & Write Basics 
+
 print("TASK 1: File Read & Write Basics ")
 print()
 # Part A:
@@ -55,6 +56,7 @@ print()
 print()
 
 # TASK 2: API Integration
+
 url = "https://dummyjson.com/products?limit=20"
 response = requests.get(url)
 data = response.json()
@@ -101,6 +103,7 @@ print()
 print()
 
 # TASK 3: EXCEPTION HANDLING
+
 print("TASK 3: Exception Handling")
 print()
 # Part A — Guarded Calculator
@@ -186,3 +189,32 @@ while True:
         print("Request timed out. Try again later.")
     except Exception as e:
         print("Error:", e)
+print()
+print()
+print()
+
+# TASK 4: LOGGING TO FILE
+print("TASK 4: Logging To File")
+print()
+# Function for log errors
+def log_error(context, error_type, message):
+    with open(r"C:\Users\cvsat\OneDrive\Desktop\error_log.txt", "a", encoding="utf-8") as f:
+        time = datetime.now()
+        f.write(f"[{time}] ERROR in {context}: {error_type} — {message}\n")
+print()
+# Trigger ConnectionError
+try:
+    requests.get("https://this-host-does-not-exist-xyz.com/api", timeout=5)
+except requests.exceptions.ConnectionError as e:
+    log_error("fetch_products", "ConnectionError", str(e))
+print()
+# Trigger HTTP 404
+response = requests.get("https://dummyjson.com/products/999", timeout=5)
+if response.status_code != 200:
+    log_error("lookup_product", "HTTPError", "404 Not Found for product ID 999")
+print()
+# Read and print log file
+print("Error Log Contents:\n")
+
+with open(r"C:\Users\cvsat\OneDrive\Desktop\error_log.txt", "r", encoding="utf-8") as f:
+    print(f.read())
