@@ -96,3 +96,93 @@ new_product = {
     "description": "A product I created via API"}
 response3 = requests.post("https://dummyjson.com/products/add",json=new_product)
 print(response3.json())
+print()
+print()
+print()
+
+# TASK 3: EXCEPTION HANDLING
+print("TASK 3: Exception Handling")
+print()
+# Part A — Guarded Calculator
+print("Part A — Guarded Calculator")
+print()
+def safe_divide(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return "Error: Cannot divide by zero"
+    except TypeError:
+        return "Error: Invalid input types"
+# Test
+print("Safe Divide Tests:")
+print(safe_divide(10, 2))
+print(safe_divide(10, 0))
+print(safe_divide("ten", 2))
+print()
+print()
+
+# Part B — Guarded File Reader
+print("Part B — Guarded File Reader")
+print()
+def read_file_safe(filename):
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found.")
+    finally:
+        print("File operation attempt complete.")
+print("Reading existing file:")
+print(read_file_safe(r"C:\Users\cvsat\OneDrive\Desktop\python_notes.txt"))
+print()
+print("Reading missing file:")
+read_file_safe("ghost_file.txt")
+print()
+print()
+
+# Part C — Robust API Calls
+print("Part C — Robust API Calls")
+print()
+try:
+    url = "https://dummyjson.com/products?limit=20"
+    response = requests.get(url, timeout=5)
+    data = response.json()
+    print("API fetched successfully")
+except requests.exceptions.ConnectionError:
+    print("Connection failed. Please check your internet.")
+except requests.exceptions.Timeout:
+    print("Request timed out. Try again later.")
+except Exception as e:
+    print("Error:", e)
+print()
+print()
+
+# Part D — Input Validation Loop
+print("Part D — Input Validation Loop")
+print()
+while True:
+    user_input = input("Enter a product ID to look up (1–100), or 'quit' to exit: ")
+    if user_input.lower() == "quit":
+        break
+    # Validation
+    if not user_input.isdigit():
+        print("Invalid input. Please enter a number.")
+        continue
+    product_id = int(user_input)
+    if product_id < 1 or product_id > 100:
+        print("Please enter a number between 1 and 100.")
+        continue
+    try:
+        url = f"https://dummyjson.com/products/{product_id}"
+        response = requests.get(url, timeout=5)
+        if response.status_code == 404:
+            print("Product not found.")
+        else:
+            data = response.json()
+            print(f"{data['title']} - ${data['price']}")
+    except requests.exceptions.ConnectionError:
+        print("Connection failed. Please check your internet.")
+    except requests.exceptions.Timeout:
+        print("Request timed out. Try again later.")
+    except Exception as e:
+        print("Error:", e)
